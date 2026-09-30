@@ -1,5 +1,7 @@
 allowBuilds:
-  sharp: false
-  unrs-resolver: false
+    "@prisma/engines": true
+    prisma: true
+    sharp: false
+    unrs-resolver: false
 minimumReleaseAgeExclude:
-  - next@16.3.7
+    - next@16.3.7

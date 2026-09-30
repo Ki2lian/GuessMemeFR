@@ -25,7 +25,7 @@ const eslintConfig = defineConfig([
             parser: tslint.parser,
             parserOptions: {
                 projectService: {
-                    allowDefaultProject: [ "eslint.config.mjs", "postcss.config.mjs" ],
+                    allowDefaultProject: [ "eslint.config.mjs", "postcss.config.mjs", "prisma/*", "prisma.config.ts" ],
                     defaultProject: "tsconfig.json",
                 },
                 sourceType: "module",
