@@ -1,0 +1,68 @@
+{
+    "HomePage": {
+        "classicGame": "Partie classique",
+        "dailyChallenge": "Défi du jour",
+        "description": "Chaque essai révèle un peu plus l'image. À toi de reconnaître la référence avant les autres.",
+        "eyebrow": "Le jeu des références internet",
+        "noAccountRequired": "Aucun compte requis pour commencer.",
+        "title": "Devine le mème avant que l'image ne se révèle."
+    },
+    "Metadata": {
+        "applicationName": "Devine le mème",
+        "description": "Devine le mème avant que l'image ne se révèle.",
+        "openGraphDescription": "Devine le mème avant la révélation.",
+        "siteName": "Devine le mème"
+    },
+    "Navigation": {
+        "brand": "Devine le mème",
+        "homeAriaLabel": "Devine le mème, accueil",
+        "login": "Se connecter"
+    },
+    "PagePlaceholder": {
+        "backToHome": "Retour à l'accueil",
+        "eyebrow": "Bientôt disponible"
+    },
+    "Pages": {
+        "admin": {
+            "description": "Cet espace sera réservé à la gestion du catalogue de mèmes.",
+            "title": "Administration"
+        },
+        "classic": {
+            "description": "La partie classique accueillera bientôt dix manches à enchaîner.",
+            "title": "La partie classique arrive bientôt"
+        },
+        "daily": {
+            "description": "Le défi du jour sera le même pour toute la communauté.",
+            "title": "Le défi du jour arrive bientôt"
+        },
+        "login": {
+            "description": "La connexion permettra bientôt de conserver vos progrès.",
+            "title": "Connexion"
+        },
+        "profile": {
+            "description": "Vos parties et vos séries apparaîtront ici après la connexion.",
+            "title": "Votre profil"
+        }
+    },
+    "Preview": {
+        "ariaLabel": "Aperçu des effets de révélation",
+        "canvasAriaLabel": "Aperçu de l'effet {effect} au niveau de révélation {revealLevel} sur {maxRevealLevel}",
+        "effects": {
+            "distorted": "Déformé",
+            "hidden": "Masqué",
+            "pixelated": "Pixellisé",
+            "scrambled": "Mélangé",
+            "zoomedIn": "Zoom"
+        },
+        "revealLevel": "Révélation : {revealLevel} / {maxRevealLevel}",
+        "round": "Manche {round, number, ::00}"
+    },
+    "ThemeToggle": {
+        "changeTo": "Passer au thème {theme}",
+        "themes": {
+            "dark": "sombre",
+            "light": "clair",
+            "system": "système"
+        }
+    }
+}

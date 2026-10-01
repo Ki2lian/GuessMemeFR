@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { CANVAS_HEIGHT, CANVAS_WIDTH, drawMemePreview, type MemeEffect } from "@/lib/canvas/meme-effects";
@@ -20,6 +21,7 @@ const previewImagePaths = [
 const previewImagePath = typeof window === "undefined" ? previewImagePaths[0] : getRandomPreviewImagePath();
 
 export const MemePreviewCanvas = ({ effect, revealLevel, seed }: MemePreviewCanvasProps) => {
+    const t = useTranslations("Preview");
     const canvasReference = useRef<HTMLCanvasElement>(null);
     const [ image, setImage ] = useState<HTMLImageElement | null>(null);
 
@@ -46,7 +48,7 @@ export const MemePreviewCanvas = ({ effect, revealLevel, seed }: MemePreviewCanv
 
     return (
         <canvas
-            aria-label={ `Aperçu de l'effet ${ effect } au niveau de révélation ${ revealLevel } sur 6` }
+            aria-label={ t("canvasAriaLabel", { effect, maxRevealLevel: 6, revealLevel }) }
             className="bg-muted rounded-2xl w-full aspect-4/3"
             height={ CANVAS_HEIGHT }
             ref={ canvasReference }

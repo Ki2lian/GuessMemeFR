@@ -1,6 +1,7 @@
 "use client";
 
 import { Moon, Sun, SunMoon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
 
@@ -8,13 +9,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const themeOrder = [ "system", "light", "dark" ] as const;
 
-const themeLabels = {
-    dark: "sombre",
-    light: "clair",
-    system: "système",
-} as const;
-
 export const ThemeToggle = () => {
+    const t = useTranslations("ThemeToggle");
     const { setTheme, theme } = useTheme();
     const mounted = useSyncExternalStore(subscribeToNothing, getClientSnapshot, getServerSnapshot);
     const currentTheme = theme === "dark" || theme === "light" || theme === "system" ? theme : "system";
@@ -30,7 +26,7 @@ export const ThemeToggle = () => {
 
     return (
         <button
-            aria-label={ `Passer au thème ${ themeLabels[nextTheme] }` }
+            aria-label={ t("changeTo", { theme: t(`themes.${ nextTheme }`) }) }
             className="place-items-center grid border border-border hover:border-primary rounded-full min-w-11 min-h-11 hover:text-primary transition-colors"
             onClick={ cycleTheme }
             type="button"
