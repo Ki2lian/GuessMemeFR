@@ -171,7 +171,7 @@ importers:
         version: 1.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@t3-oss/env-nextjs':
         specifier: ^0.13.11
-        version: 0.13.11(typescript@5.9.3)(valibot@1.4.2(typescript@5.9.3))(zod@3.25.76)
+        version: 0.13.11(typescript@5.9.3)(valibot@1.4.2(typescript@5.9.3))(zod@4.6.5)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -187,6 +187,9 @@ importers:
       next:
         specifier: 16.3.7
         version: 16.3.7(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react:
         specifier: 19.2.8
         version: 19.2.8
@@ -3048,6 +3051,12 @@ packages:
     resolution: {integrity: sha512-NMPBRMJgiQHjbd8phG3Vebdx4kZ1H121rbl5IkMqeOsahptB9BKo/d7oJ3zTXqTgagn2bWlNSXkh0QUGM31RYg==}
     engines: {node: '>=18'}
 
+  next-themes@0.4.6:
+    resolution: {integrity: sha512-pZvgD5L0IEvX5/9GWyHMf3m8BKiVQwsCMHfoFosXtXBMnaS0ZnIJ9ST4b4NqLVKDEm8QBxoNNGNaBv2JNF6XNA==}
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+
   next@16.3.7:
     resolution: {integrity: sha512-S4AlB0KMYcvVyEVjfD2Ze/3JsX9PWjpD3hJPcEJTVvkAQsMTYVs9DB1NtaBbs41ZZ18NxYwkmM8ljqtrFrmLsQ==}
     engines: {node: '>=20.9.0'}
@@ -4651,19 +4660,19 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@t3-oss/env-core@0.13.11(typescript@5.9.3)(valibot@1.4.2(typescript@5.9.3))(zod@3.25.76)':
+  '@t3-oss/env-core@0.13.11(typescript@5.9.3)(valibot@1.4.2(typescript@5.9.3))(zod@4.6.5)':
     optionalDependencies:
       typescript: 5.9.3
       valibot: 1.4.2(typescript@5.9.3)
-      zod: 3.25.76
+      zod: 4.6.5
 
-  '@t3-oss/env-nextjs@0.13.11(typescript@5.9.3)(valibot@1.4.2(typescript@5.9.3))(zod@3.25.76)':
+  '@t3-oss/env-nextjs@0.13.11(typescript@5.9.3)(valibot@1.4.2(typescript@5.9.3))(zod@4.6.5)':
     dependencies:
-      '@t3-oss/env-core': 0.13.11(typescript@5.9.3)(valibot@1.4.2(typescript@5.9.3))(zod@3.25.76)
+      '@t3-oss/env-core': 0.13.11(typescript@5.9.3)(valibot@1.4.2(typescript@5.9.3))(zod@4.6.5)
     optionalDependencies:
       typescript: 5.9.3
       valibot: 1.4.2(typescript@5.9.3)
-      zod: 3.25.76
+      zod: 4.6.5
 
   '@tailwindcss/node@4.3.3':
     dependencies:
@@ -6850,6 +6859,11 @@ snapshots:
   negotiator@1.1.0:
     dependencies:
       content-type: 2.1.0
+
+  next-themes@0.4.6(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+    dependencies:
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
 
   next@16.3.7(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
