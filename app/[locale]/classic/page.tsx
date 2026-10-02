@@ -1,9 +1,10 @@
-import { useTranslations } from "next-intl";
+import { redirect } from "next/navigation";
 
-import { PagePlaceholder } from "@/components/site/page-placeholder";
+import { ROUTES } from "@/routes";
 
 export default function ClassicPage() {
-    const t = useTranslations("Pages.classic");
+    const values = new Uint32Array(1);
 
-    return <PagePlaceholder description={ t("description") } title={ t("title") } />;
+    crypto.getRandomValues(values);
+    redirect(`${ ROUTES.classic }/${ values[0] }`);
 }

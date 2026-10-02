@@ -7,6 +7,59 @@
         "noAccountRequired": "Aucun compte requis pour commencer.",
         "title": "Devine le mème avant que l'image ne se révèle."
     },
+    "ClassicGame": {
+        "answer": "Réponse",
+        "attempt": "Tentatives",
+        "canvas": {
+            "ariaLabel": "Mème à deviner",
+            "loading": "Chargement du mème…",
+            "unavailable": "Impossible de charger le mème."
+        },
+        "complete": {
+            "averageAttempts": "Moy. tentatives",
+            "breakdown": "Détail des manches",
+            "correct": "Trouvés",
+            "eyebrow": "Partie terminée",
+            "missed": "Passés",
+            "newGame": "Nouvelle partie",
+            "outOf": "sur {total} points possibles",
+            "replay": "Rejouer cette seed",
+            "seedDescription": "Cette seed rejoue exactement la même série de manches.",
+            "share": "Partager le défi"
+        },
+        "eyebrow": "Partie classique",
+        "effect": "Effet",
+        "effects": {
+            "distorted": "Déformé",
+            "hidden": "Masqué",
+            "pixelated": "Pixellisé",
+            "scrambled": "Mélangé",
+            "zoomed-in": "Zoom"
+        },
+        "feedback": {
+            "correct": "Bien joué !",
+            "failed": "Les six paliers sont révélés.",
+            "skipped": "Manche passée."
+        },
+        "guessLabel": "Ta proposition",
+        "guessPlaceholder": "Écris ta réponse",
+        "history": {
+            "ariaLabel": "Historique des propositions",
+            "revealRequested": "Révélation demandée"
+        },
+        "loadingGame": "Chargement de la partie…",
+        "nextRound": "Manche suivante",
+        "question": "Quel est ce mème ?",
+        "revealMore": "Révéler plus",
+        "round": "Manche {current} sur {total}",
+        "roundPoints": "{points} points",
+        "score": "Score",
+        "scoreGain": "+{points}",
+        "shareTitle": "Devine le mème",
+        "shareAriaLabel": "Partager cette partie",
+        "skip": "Passer le mème",
+        "submit": "Valider"
+    },
     "Metadata": {
         "applicationName": "Devine le mème",
         "description": "Devine le mème avant que l'image ne se révèle.",

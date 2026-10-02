@@ -9,7 +9,7 @@ export const SiteHeader = () => {
     const t = useTranslations("Navigation");
 
     return (
-        <header className="flex justify-between items-center px-5 sm:px-8 min-h-16 sm:min-h-20 shrink-0">
+        <header className="flex justify-between items-center px-5 sm:px-8 min-h-16 shrink-0">
             <Link aria-label={ t("homeAriaLabel") } className="flex items-center gap-2 font-bold tracking-tight" href={ ROUTES.home }>
                 <span
                     aria-hidden="true"
