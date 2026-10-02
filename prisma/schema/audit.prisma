@@ -1,0 +1,19 @@
+enum AuditEventType {
+  AUTH_SIGNED_IN
+  AUTH_SIGNED_OUT
+}
+
+model AuditLog {
+  id            String         @id @default(cuid())
+  event         AuditEventType
+  metadata      Json?
+  occurredAt    DateTime       @default(now())
+  subjectUserId String?
+  actorUserId   String?
+  subjectUser   User?          @relation("AuditEventSubject", fields: [subjectUserId], references: [id], onDelete: SetNull)
+  actorUser     User?          @relation("AuditEventActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([subjectUserId, occurredAt])
+  @@index([actorUserId, occurredAt])
+  @@index([event, occurredAt])
+}

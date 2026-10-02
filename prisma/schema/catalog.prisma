@@ -1,0 +1,84 @@
+enum MemeDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum MemeStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum MemeAnswerType {
+  CANONICAL
+  ALIAS
+}
+
+enum MediaAssetStatus {
+  PENDING
+  READY
+  DELETED
+}
+
+model Meme {
+  id           String         @id @default(cuid())
+  title        String         @db.VarChar(255)
+  difficulty   MemeDifficulty
+  origin       String?        @db.VarChar(255)
+  sourceUrl    String?        @db.Text
+  status       MemeStatus     @default(DRAFT)
+  publishedAt  DateTime?
+  archivedAt   DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  createdById  String?
+  coverAssetId String?        @unique
+
+  createdBy      User?            @relation("MemeAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+  answers        MemeAnswer[]
+  assets         MediaAsset[]     @relation("MemeAssets")
+  coverAsset     MediaAsset?      @relation("MemeCover", fields: [coverAssetId], references: [id], onDelete: SetNull)
+  dailyChallenges DailyChallenge[]
+  rounds         GameRound[]
+
+  @@index([status, publishedAt])
+  @@index([difficulty, status])
+  @@index([createdById])
+}
+
+model MemeAnswer {
+  id              String         @id @default(cuid())
+  value           String         @db.VarChar(255)
+  normalizedValue String         @db.VarChar(255)
+  type            MemeAnswerType
+  memeId          String
+  createdAt       DateTime       @default(now())
+
+  meme Meme @relation(fields: [memeId], references: [id], onDelete: Cascade)
+
+  @@unique([memeId, normalizedValue])
+  @@index([memeId, type])
+}
+
+model MediaAsset {
+  id           String           @id @default(cuid())
+  storageKey   String           @unique @db.VarChar(512)
+  mimeType     String           @db.VarChar(127)
+  byteSize     Int
+  width        Int?
+  height       Int?
+  sha256       String           @unique @db.Char(64)
+  status       MediaAssetStatus @default(PENDING)
+  createdAt    DateTime         @default(now())
+  deletedAt    DateTime?
+  uploadedById String?
+  memeId       String?
+
+  uploadedBy User? @relation("MediaUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  meme       Meme? @relation("MemeAssets", fields: [memeId], references: [id], onDelete: SetNull)
+  coverFor   Meme? @relation("MemeCover")
+
+  @@index([memeId, status])
+  @@index([uploadedById])
+}

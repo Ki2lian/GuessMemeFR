@@ -1,0 +1,116 @@
+enum GameMode {
+  CLASSIC
+  DAILY
+}
+
+enum GameSessionStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+}
+
+enum GameRoundStatus {
+  ACTIVE
+  CORRECT
+  FAILED
+  SKIPPED
+}
+
+enum GameGuessKind {
+  GUESS
+  REVEAL
+}
+
+enum GameGuessResult {
+  CORRECT
+  INCORRECT
+}
+
+model GameSession {
+  id               String            @id @default(cuid())
+  mode             GameMode
+  status           GameSessionStatus @default(ACTIVE)
+  seed             BigInt?
+  score            Int               @default(0)
+  startedAt        DateTime          @default(now())
+  completedAt      DateTime?
+  userId           String?
+  dailyChallengeId String?
+
+  user           User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  dailyChallenge DailyChallenge? @relation(fields: [dailyChallengeId], references: [id], onDelete: Restrict)
+  rounds         GameRound[]
+  classicResult  ClassicResult?
+  dailyResult    DailyResult?
+
+  @@index([userId, startedAt])
+  @@index([mode, seed])
+  @@index([dailyChallengeId])
+}
+
+model GameRound {
+  id            String          @id @default(cuid())
+  position      Int
+  seed          BigInt
+  effect        RevealEffect
+  revealLevel   Int             @default(0)
+  status        GameRoundStatus @default(ACTIVE)
+  completedAt   DateTime?
+  gameSessionId String
+  memeId        String
+
+  gameSession GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
+  meme        Meme        @relation(fields: [memeId], references: [id], onDelete: Restrict)
+  guesses     GameGuess[]
+
+  @@unique([gameSessionId, position])
+  @@index([memeId])
+}
+
+model GameGuess {
+  id          String           @id @default(cuid())
+  position    Int
+  kind        GameGuessKind
+  result      GameGuessResult?
+  value       String           @db.Text
+  createdAt   DateTime         @default(now())
+  gameRoundId String
+
+  gameRound GameRound @relation(fields: [gameRoundId], references: [id], onDelete: Cascade)
+
+  @@unique([gameRoundId, position])
+}
+
+model ClassicResult {
+  id            String      @id @default(cuid())
+  seed          BigInt
+  score         Int
+  solvedRounds  Int
+  totalAttempts Int
+  completedAt   DateTime    @default(now())
+  userId        String
+  gameSessionId String      @unique
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  gameSession GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, seed])
+  @@index([seed, completedAt])
+}
+
+model DailyResult {
+  id               String         @id @default(cuid())
+  score            Int
+  totalAttempts    Int
+  completedAt      DateTime       @default(now())
+  userId           String
+  gameSessionId    String         @unique
+  dailyChallengeId String
+
+  user           User           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  gameSession    GameSession    @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
+  dailyChallenge DailyChallenge @relation(fields: [dailyChallengeId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, dailyChallengeId])
+  @@index([dailyChallengeId, completedAt])
+}

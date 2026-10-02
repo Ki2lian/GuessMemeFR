@@ -1,0 +1,30 @@
+enum RevealEffect {
+  ZOOMED_IN
+  PIXELATED
+  SCRAMBLED
+  DISTORTED
+  HIDDEN
+}
+
+enum DailyChallengeStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model DailyChallenge {
+  id        String               @id @default(cuid())
+  date      DateTime             @unique @db.Date
+  effect    RevealEffect
+  seed      BigInt
+  status    DailyChallengeStatus @default(DRAFT)
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  memeId    String
+
+  meme     Meme          @relation(fields: [memeId], references: [id], onDelete: Restrict)
+  sessions GameSession[]
+  results  DailyResult[]
+
+  @@index([status, date])
+}

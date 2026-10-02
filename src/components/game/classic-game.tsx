@@ -20,11 +20,11 @@ import {
     getClassicRoundScore,
     getClassicScore,
     isClassicGameComplete,
-    normalizeAnswer,
     revealClassicRound,
     skipClassicRound,
     submitClassicGuess,
 } from "@/lib/game/classic-game";
+import { normalizeAnswer } from "@/lib/game/normalize-answer";
 import { ROUTES } from "@/routes";
 
 interface ClassicGameProps {

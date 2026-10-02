@@ -1,4 +1,5 @@
 import { MAX_REVEAL_LEVEL } from "@/lib/canvas/meme-effects";
+import { normalizeAnswer } from "@/lib/game/normalize-answer";
 
 export interface ClassicGameState {
     roundIndex: number;
@@ -25,13 +26,6 @@ export const createClassicGameState = (roundCount: number): ClassicGameState => 
     roundIndex: 0,
     rounds: Array.from({ length: roundCount }, () => ({ guesses: [], revealLevel: 0, status: "active" })),
 });
-
-export const normalizeAnswer = (value: string) => value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("fr-FR")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
 
 export const submitClassicGuess = (state: ClassicRoundState, guess: string, answer: string): ClassicRoundState => {
     if (state.status !== "active") {
