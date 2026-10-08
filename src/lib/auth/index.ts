@@ -12,6 +12,11 @@ import { env } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
 
 export const auth = betterAuth({
+    advanced: {
+        ipAddress: {
+            ipAddressHeaders: [ "cf-connecting-ip", "x-real-ip" ],
+        },
+    },
     baseURL: env.BETTER_AUTH_URL,
     database: prismaAdapter(prisma, {
         provider: "mysql",
