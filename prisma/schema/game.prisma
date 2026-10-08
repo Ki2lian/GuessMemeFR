@@ -3,6 +3,30 @@ enum GameMode {
   DAILY
 }
 
+model ClassicSeed {
+  seed      BigInt             @id
+  createdAt DateTime           @default(now())
+  rounds    ClassicSeedRound[]
+}
+
+model ClassicSeedRound {
+  id               String       @id @default(cuid())
+  position         Int
+  seed             BigInt
+  effect           RevealEffect
+  title            String       @db.VarChar(255)
+  imageStorageKey  String       @db.VarChar(512)
+  answers          Json
+  classicSeedValue BigInt
+  memeId           String
+
+  classicSeed ClassicSeed @relation(fields: [classicSeedValue], references: [seed], onDelete: Cascade)
+  meme        Meme        @relation(fields: [memeId], references: [id], onDelete: Restrict)
+
+  @@unique([classicSeedValue, position])
+  @@index([memeId])
+}
+
 enum GameSessionStatus {
   ACTIVE
   COMPLETED
@@ -82,14 +106,14 @@ model GameGuess {
 }
 
 model ClassicResult {
-  id            String      @id @default(cuid())
+  id            String   @id @default(cuid())
   seed          BigInt
   score         Int
   solvedRounds  Int
   totalAttempts Int
-  completedAt   DateTime    @default(now())
+  completedAt   DateTime @default(now())
   userId        String
-  gameSessionId String      @unique
+  gameSessionId String   @unique
 
   user        User        @relation(fields: [userId], references: [id], onDelete: Restrict)
   gameSession GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
@@ -99,12 +123,12 @@ model ClassicResult {
 }
 
 model DailyResult {
-  id               String         @id @default(cuid())
+  id               String   @id @default(cuid())
   score            Int
   totalAttempts    Int
-  completedAt      DateTime       @default(now())
+  completedAt      DateTime @default(now())
   userId           String
-  gameSessionId    String         @unique
+  gameSessionId    String   @unique
   dailyChallengeId String
 
   user           User           @relation(fields: [userId], references: [id], onDelete: Restrict)

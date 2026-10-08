@@ -1,0 +1,1 @@
+export const MAX_MEDIA_FILE_SIZE_BYTES = 900 * 1024;

@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "cn";
 import { Moon, Sun, SunMoon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
@@ -9,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const themeOrder = [ "system", "light", "dark" ] as const;
 
-export const ThemeToggle = () => {
+export const ThemeToggle = ({ className }: { className?: string }) => {
     const t = useTranslations("ThemeToggle");
     const { setTheme, theme } = useTheme();
     const mounted = useSyncExternalStore(subscribeToNothing, getClientSnapshot, getServerSnapshot);
@@ -21,13 +22,13 @@ export const ThemeToggle = () => {
     };
 
     if (!mounted) {
-        return <Skeleton aria-hidden="true" className="block rounded-full min-w-11 min-h-11" />;
+        return <Skeleton aria-hidden="true" className={ cn("block rounded-full min-w-11 min-h-11", className) } />;
     }
 
     return (
         <button
             aria-label={ t("changeTo", { theme: t(`themes.${ nextTheme }`) }) }
-            className="place-items-center grid border border-border hover:border-primary rounded-full min-w-11 min-h-11 hover:text-primary transition-colors"
+            className={ cn("place-items-center grid border border-border hover:border-primary rounded-full min-w-11 min-h-11 hover:text-primary transition-colors", className) }
             onClick={ cycleTheme }
             type="button"
         >

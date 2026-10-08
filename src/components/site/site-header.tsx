@@ -1,7 +1,7 @@
-import { CircleUserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
+import { UserMenu } from "@/components/auth/user-menu";
 import { ThemeToggle } from "@/components/site/theme-toggle";
 import { ROUTES } from "@/routes";
 
@@ -21,14 +21,7 @@ export const SiteHeader = () => {
             </Link>
             <div className="flex items-center gap-2">
                 <ThemeToggle />
-                <Link
-                    aria-label={ t("login") }
-                    className="flex items-center gap-2 px-3 border border-border hover:border-primary rounded-full min-h-11 hover:text-primary text-sm transition-colors"
-                    href={ ROUTES.login }
-                >
-                    <CircleUserRound aria-hidden="true" size={ 18 } />
-                    <span className="hidden sm:inline">{t("login")}</span>
-                </Link>
+                <UserMenu />
             </div>
         </header>
     );

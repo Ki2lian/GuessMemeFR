@@ -6,6 +6,7 @@ import { admin } from "better-auth/plugins";
 import { CDN } from "discord.js";
 
 import { auditLogRepository } from "@/data/AuditLogRepository";
+import { createBanNotice } from "@/lib/auth/ban-notice";
 import { accessControl, adminRole, editorRole, userRole } from "@/lib/auth/permissions";
 import { env } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
@@ -18,12 +19,12 @@ export const auth = betterAuth({
     databaseHooks: {
         session: {
             create: {
-                after: async (session) => {
+                after: async session => {
                     await auditLogRepository.recordAuthEvent(AuditEventType.AUTH_SIGNED_IN, session.userId);
                 },
             },
             delete: {
-                after: async (session) => {
+                after: async session => {
                     await auditLogRepository.recordAuthEvent(AuditEventType.AUTH_SIGNED_OUT, session.userId);
                 },
             },
@@ -32,6 +33,7 @@ export const auth = betterAuth({
     plugins: [
         admin({
             ac: accessControl,
+            bannedUserMessage: user => createBanNotice(String(user.id)),
             roles: {
                 admin: adminRole,
                 editor: editorRole,
@@ -45,17 +47,18 @@ export const auth = betterAuth({
         discord: {
             clientId: env.DISCORD_CLIENT_ID,
             clientSecret: env.DISCORD_CLIENT_SECRET,
-            mapProfileToUser: (discordUser) => {
+            mapProfileToUser: discordUser => {
                 const cdn = new CDN();
 
                 return {
                     banner: discordUser.banner ? cdn.banner(discordUser.id, discordUser.banner) : null,
                     discordId: discordUser.id,
+                    email: discordUser.email ?? `${ discordUser.id }@discord.placeholder.invalid`,
                     username: discordUser.username,
                 };
             },
             overrideUserInfoOnSignIn: true,
-            scope: [ "identify" ],
+            scope: [ "identify", "email" ],
         },
     },
     user: {

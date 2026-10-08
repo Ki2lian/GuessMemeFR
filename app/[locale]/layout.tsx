@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import Providers from "@/contexts/Providers";
 import { routing } from "@/i18n/routing";
+import { env } from "@/lib/env";
 import { EXTERNAL_LINKS } from "@/routes";
 
 const geistSans = Geist({
@@ -36,6 +37,7 @@ export const generateMetadata = async ({ params }: Pick<LocaleLayoutProps, "para
         description: t("description"),
         icons: { icon: "/favicon.ico" },
         keywords: "meme, devine, guess, image, web, site",
+        metadataBase: new URL(env.BETTER_AUTH_URL),
         openGraph: {
             description: t("openGraphDescription"),
             locale: "fr_FR",

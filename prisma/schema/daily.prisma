@@ -13,14 +13,17 @@ enum DailyChallengeStatus {
 }
 
 model DailyChallenge {
-  id        String               @id @default(cuid())
-  date      DateTime             @unique @db.Date
-  effect    RevealEffect
-  seed      BigInt
-  status    DailyChallengeStatus @default(DRAFT)
-  createdAt DateTime             @default(now())
-  updatedAt DateTime             @updatedAt
-  memeId    String
+  id              String               @id @default(cuid())
+  date            DateTime             @unique @db.Date
+  effect          RevealEffect
+  seed            BigInt
+  title           String               @db.VarChar(255)
+  imageStorageKey String               @db.VarChar(512)
+  answers         Json
+  status          DailyChallengeStatus @default(DRAFT)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  memeId          String
 
   meme     Meme          @relation(fields: [memeId], references: [id], onDelete: Restrict)
   sessions GameSession[]

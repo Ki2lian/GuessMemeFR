@@ -98,7 +98,12 @@ const drawPixelated = (context: CanvasRenderingContext2D, image: HTMLImageElemen
 };
 
 const drawZoomedIn = (context: CanvasRenderingContext2D, image: HTMLImageElement, revealLevel: number, seed: number) => {
-    const zoom = 1 + (EFFECT_CONFIG["zoomed-in"].initialZoom - 1) * (1 - revealLevel / MAX_REVEAL_LEVEL);
+    const initialZoom = EFFECT_CONFIG["zoomed-in"].initialZoom;
+    const firstRevealProgress = 1 - (1 - 1 / MAX_REVEAL_LEVEL) ** 5;
+    const firstRevealZoom = 1 + (initialZoom - 1) * (1 - firstRevealProgress);
+    const zoom = revealLevel === 0
+        ? initialZoom
+        : firstRevealZoom - (firstRevealZoom - 1) * ((revealLevel - 1) / (MAX_REVEAL_LEVEL - 1));
     const width = CANVAS_WIDTH / zoom;
     const height = CANVAS_HEIGHT / zoom;
     const focusPoint = zoomFocusPoint(seed);

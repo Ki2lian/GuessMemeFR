@@ -20,19 +20,19 @@ export interface ClassicRoundState {
 
 export type ClassicRoundStatus = "active" | "correct" | "failed" | "skipped";
 
-export const CLASSIC_STORAGE_VERSION = 3;
+export const CLASSIC_STORAGE_VERSION = 4;
 
 export const createClassicGameState = (roundCount: number): ClassicGameState => ({
     roundIndex: 0,
     rounds: Array.from({ length: roundCount }, () => ({ guesses: [], revealLevel: 0, status: "active" })),
 });
 
-export const submitClassicGuess = (state: ClassicRoundState, guess: string, answer: string): ClassicRoundState => {
+export const submitClassicGuess = (state: ClassicRoundState, guess: string, answers: readonly string[]): ClassicRoundState => {
     if (state.status !== "active") {
         return state;
     }
 
-    const isCorrect = normalizeAnswer(guess) === normalizeAnswer(answer);
+    const isCorrect = answers.some(answer => normalizeAnswer(guess) === normalizeAnswer(answer));
     const guesses = [ ...state.guesses, { kind: "guess" as const, result: isCorrect ? "correct" as const : "incorrect" as const, value: guess } ];
 
     if (isCorrect) {

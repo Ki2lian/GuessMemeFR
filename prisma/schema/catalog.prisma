@@ -40,6 +40,7 @@ model Meme {
   assets         MediaAsset[]     @relation("MemeAssets")
   coverAsset     MediaAsset?      @relation("MemeCover", fields: [coverAssetId], references: [id], onDelete: SetNull)
   dailyChallenges DailyChallenge[]
+  classicSeedRounds ClassicSeedRound[]
   rounds         GameRound[]
 
   @@index([status, publishedAt])

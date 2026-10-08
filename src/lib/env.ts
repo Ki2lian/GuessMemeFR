@@ -13,7 +13,9 @@ export const env = createEnv({
         DATABASE_URL: z.url(),
         DISCORD_CLIENT_ID: z.string(),
         DISCORD_CLIENT_SECRET: z.string(),
+        MEDIA_STORAGE_PATH: z.string().min(1).optional(),
         NODE_ENV: z.enum([ "development", "production", "test" ]).default("development"),
+        PROTECTED_ADMIN_DISCORD_ID: z.string().min(1).optional(),
         SHADOW_DATABASE_URL: z.url(),
     },
 });
