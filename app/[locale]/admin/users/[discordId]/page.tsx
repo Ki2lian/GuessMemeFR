@@ -49,8 +49,10 @@ export default async function AdminUserPage({ params }: { params: Promise<{ disc
                     {user.banExpires && <CardContent>{t("banExpires", { date: dateTimeFormatter.format(user.banExpires) })}</CardContent>}
                 </Card>
             )}
-            <div className="gap-4 grid sm:grid-cols-3">
+            <div className="gap-4 grid sm:grid-cols-2 xl:grid-cols-5">
                 <MetricCard label={ t("dailyParticipations") } value={ user._count.dailyResults } />
+                <MetricCard label={ t("currentDailyStreak") } value={ user.dailyStreak.current } />
+                <MetricCard label={ t("longestDailyStreak") } value={ user.dailyStreak.longest } />
                 <MetricCard label={ t("classicParticipations") } value={ user._count.classicResults } />
                 <MetricCard label={ t("gamesStarted") } value={ user._count.gameSessions } />
             </div>

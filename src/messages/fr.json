@@ -2,6 +2,7 @@
     "HomePage": {
         "classicGame": "Partie classique",
         "dailyChallenge": "Défi du jour",
+        "dailyStreak": "{count, plural, one {# jour} other {# jours}}",
         "description": "Chaque essai révèle un peu plus l'image. À toi de reconnaître la référence avant les autres.",
         "eyebrow": "Le jeu des références internet",
         "noAccountRequired": "Aucun compte requis pour commencer.",
@@ -114,9 +115,12 @@
             "classicHistoryTitle": "Parties classiques",
             "classicResult": "{score} points · {solved} trouvés · {attempts} propositions",
             "description": "Les statistiques et l’historique des défis quotidiens apparaîtront ici après leur mise en place.",
+            "currentDailyStreak": "Série en cours",
             "eyebrow": "Compte",
+            "longestDailyStreak": "Meilleure série",
             "noClassicGames": "Terminez une partie classique pour voir vos résultats ici.",
             "role": "Rôle : {role}",
+            "streakDays": "{count, plural, =0 {0 jour} one {# jour} other {# jours}}",
             "title": "Votre profil"
         },
         "signIn": {
@@ -323,9 +327,11 @@
             "dailyHistory": "Participations aux défis quotidiens",
             "dailyHistoryDescription": "Les dix dernières participations terminées.",
             "dailyParticipations": "Défis terminés",
+            "currentDailyStreak": "Série en cours",
             "description": "Gérez les accès, les rôles et les bannissements des comptes Discord.",
             "eyebrow": "Gestion des accès",
             "gamesStarted": "Parties lancées",
+            "longestDailyStreak": "Meilleure série",
             "nextPage": "Suivant",
             "noBanReason": "Aucun motif n’a été enregistré.",
             "noConnectionHistory": "Aucune connexion n’est encore enregistrée.",

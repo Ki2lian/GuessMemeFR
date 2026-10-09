@@ -1,3 +1,4 @@
+import { getDailyStreak } from "@/lib/game/daily-streak";
 import { prisma } from "@/lib/prisma";
 
 export class UserRepository {
@@ -13,7 +14,7 @@ export class UserRepository {
     }
 
     async findForAdminByDiscordId(discordId: string) {
-        return prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
             select: {
                 _count: {
                     select: { classicResults: true, dailyResults: true, gameSessions: true },
@@ -51,10 +52,16 @@ export class UserRepository {
             },
             where: { discordId },
         });
+
+        return user ? { ...user, dailyStreak: await this.getDailyStreak(user.id) } : null;
+    }
+
+    async getDailyStreakForUser(id: string) {
+        return this.getDailyStreak(id);
     }
 
     async getProfileOverview(id: string) {
-        return prisma.user.findUnique({
+        const overview = await prisma.user.findUnique({
             select: {
                 _count: { select: { classicResults: true }},
                 classicResults: {
@@ -71,6 +78,8 @@ export class UserRepository {
             },
             where: { id },
         });
+
+        return overview ? { ...overview, dailyStreak: await this.getDailyStreak(id) } : null;
     }
 
     async listForAdmin() {
@@ -93,6 +102,20 @@ export class UserRepository {
                 username: true,
             },
         });
+    }
+
+    private async getDailyStreak(userId: string) {
+        const dailyResults = await prisma.dailyResult.findMany({
+            orderBy: { dailyChallenge: { date: "asc" }},
+            select: {
+                dailyChallenge: {
+                    select: { date: true },
+                },
+            },
+            where: { userId },
+        });
+
+        return getDailyStreak(dailyResults.map(result => result.dailyChallenge.date.toISOString().slice(0, 10)));
     }
 }
 

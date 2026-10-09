@@ -39,6 +39,16 @@ export default async function ProfilePage() {
                     </div>
                 </div>
                 <section className="mt-8">
+                    <div className="gap-4 grid sm:grid-cols-2 mb-8">
+                        <div className="p-5 border rounded-xl">
+                            <p className="text-muted-foreground text-sm">{t("currentDailyStreak")}</p>
+                            <p className="mt-1 font-bold tabular-nums text-3xl">{t("streakDays", { count: overview?.dailyStreak.current ?? 0 })}</p>
+                        </div>
+                        <div className="p-5 border rounded-xl">
+                            <p className="text-muted-foreground text-sm">{t("longestDailyStreak")}</p>
+                            <p className="mt-1 font-bold tabular-nums text-3xl">{t("streakDays", { count: overview?.dailyStreak.longest ?? 0 })}</p>
+                        </div>
+                    </div>
                     <h2 className="font-semibold text-xl">{t("classicHistoryTitle")}</h2>
                     <p className="mt-1 text-muted-foreground text-sm">{t("classicGamesCompleted", { count: overview?._count.classicResults ?? 0 })}</p>
                     {overview?.classicResults.length ? (
