@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { getTranslations } from "next-intl/server";
+import { connection } from "next/server";
 
 import { DailyGame } from "@/components/game/daily-game";
 import { dailyChallengeRepository, effectFromDatabase } from "@/data/DailyChallengeRepository";
@@ -14,7 +15,10 @@ export const metadata: Metadata = {
 };
 
 export default async function DailyPage() {
-    const dailyChallenge = await dailyChallengeRepository.getOrCreatePublishedForDate(getParisDateKey());
+    await connection();
+
+    const dateKey = getParisDateKey();
+    const dailyChallenge = await dailyChallengeRepository.getOrCreatePublishedForDate(dateKey);
 
     if (!dailyChallenge) {
         const t = await getTranslations("DailyGame");
@@ -24,5 +28,5 @@ export default async function DailyPage() {
 
     const initialStatistics = await dailyGameRepository.getCompletionStatistics(dailyChallenge.id);
 
-    return <DailyGame dateKey={ getParisDateKey(dailyChallenge.date) } effect={ effectFromDatabase[dailyChallenge.effect] } imageStorageKey={ dailyChallenge.imageStorageKey } initialStatistics={ initialStatistics } seed={ Number(dailyChallenge.seed) } />;
+    return <DailyGame dateKey={ dateKey } effect={ effectFromDatabase[dailyChallenge.effect] } imageStorageKey={ dailyChallenge.imageStorageKey } initialStatistics={ initialStatistics } seed={ Number(dailyChallenge.seed) } />;
 }
