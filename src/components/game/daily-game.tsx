@@ -68,6 +68,7 @@ export const DailyGame = ({ dateKey, effect, imageStorageKey, initialStatistics,
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ statistics, setStatistics ] = useState<DailyStatistics>(initialStatistics);
     const inputReference = useRef<HTMLInputElement>(null);
+    const shouldFocusInput = useRef(true);
     const completionReported = useRef(false);
     const isClient = useSyncExternalStore(
         () => () => undefined,
@@ -81,6 +82,13 @@ export const DailyGame = ({ dateKey, effect, imageStorageKey, initialStatistics,
     useEffect(() => {
         window.localStorage.setItem(storageKey(dateKey), JSON.stringify(storedGame));
     }, [ dateKey, storedGame ]);
+
+    useEffect(() => {
+        if (isClient && !isSubmitting && !complete && shouldFocusInput.current) {
+            shouldFocusInput.current = false;
+            inputReference.current?.focus();
+        }
+    }, [ complete, isClient, isSubmitting ]);
 
     useEffect(() => {
         if (complete && !completeReference.current) {
@@ -144,12 +152,15 @@ export const DailyGame = ({ dateKey, effect, imageStorageKey, initialStatistics,
 
         setIsSubmitting(true);
         const result = await validateDailyGuessAction({ dateKey, guess });
-        setIsSubmitting(false);
 
         if (result.dateChanged || !result.available) {
+            setIsSubmitting(false);
             router.refresh();
             return;
         }
+
+        shouldFocusInput.current = !result.correct;
+        setIsSubmitting(false);
 
         setStoredGame(current => ({
             answer: result.correct ? result.answer : current.answer,

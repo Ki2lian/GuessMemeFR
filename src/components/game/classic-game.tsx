@@ -115,6 +115,7 @@ export const ClassicGame = ({ rounds, seed }: ClassicGameProps) => {
     const [ scoreAnimationTarget, setScoreAnimationTarget ] = useState(() => getClassicScore(game));
     const bonusReference = useRef<HTMLSpanElement>(null);
     const inputReference = useRef<HTMLInputElement>(null);
+    const shouldFocusInput = useRef(true);
     const scoreAnimationTimeout = useRef<number>(0);
     const completionReported = useRef(false);
     const isClient = useSyncExternalStore(
@@ -161,6 +162,21 @@ export const ClassicGame = ({ rounds, seed }: ClassicGameProps) => {
     }, [ roundPoints ]);
 
     useEffect(() => () => window.clearTimeout(scoreAnimationTimeout.current), []);
+
+    useEffect(() => {
+        const currentRound = game.rounds[game.roundIndex];
+
+        if (!isClient || complete || !currentRound || currentRound.status !== "active" || !shouldFocusInput.current) {
+            return;
+        }
+
+        const frame = window.requestAnimationFrame(() => {
+            shouldFocusInput.current = false;
+            inputReference.current?.focus();
+        });
+
+        return () => window.cancelAnimationFrame(frame);
+    }, [ complete, game.roundIndex, game.rounds, isClient ]);
 
     useEffect(() => {
         if (!complete || completionReported.current) {
@@ -214,6 +230,7 @@ export const ClassicGame = ({ rounds, seed }: ClassicGameProps) => {
     };
 
     const nextRound = () => {
+        shouldFocusInput.current = true;
         setGame(currentGame => ({ ...currentGame, roundIndex: Math.min(currentGame.roundIndex + 1, currentGame.rounds.length) }));
         setRoundPoints(undefined);
         setGuess("");
@@ -252,6 +269,27 @@ export const ClassicGame = ({ rounds, seed }: ClassicGameProps) => {
             { duration: 280, easing: "ease-in-out" },
         );
     };
+
+    useEffect(() => {
+        const currentRound = game.rounds[game.roundIndex];
+
+        if (!isClient || complete || !currentRound || currentRound.status === "active") {
+            return;
+        }
+
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key !== "Enter" || event.repeat) {
+                return;
+            }
+
+            event.preventDefault();
+            nextRound();
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [ complete, game.roundIndex, game.rounds, isClient ]);
 
     if (!isClient) {
         return (
@@ -381,7 +419,11 @@ export const ClassicGame = ({ rounds, seed }: ClassicGameProps) => {
                         <p className="font-semibold text-lg">{round.meme.title}</p>
                         <p className={ `flex justify-center items-center gap-2 mt-2 font-semibold ${ roundState.status === "correct" ? "text-emerald-400" : "text-destructive" }` }>{roundState.status === "correct" ? <Check /> : <X />}{feedback}</p>
                         <p className="mt-2 text-muted-foreground text-sm">{t("roundPoints", { points: format.number(currentRoundScore) })}</p>
-                        <Button className="mt-4 w-full min-h-11" onClick={ nextRound }>{t("nextRound")} <ChevronRight /></Button>
+                        <Button className="mt-4 w-full min-h-11" onClick={ nextRound }>
+                            {t("nextRound")}
+                            <kbd className="bg-background/50 px-1.5 py-0.5 border rounded font-mono text-xs">{t("enterKey")}</kbd>
+                            <ChevronRight />
+                        </Button>
                     </div>
                 )}
             </div>
