@@ -35,7 +35,6 @@ export const generateMetadata = async ({ params }: Pick<LocaleLayoutProps, "para
         authors: [ { name: "Ki2lian", url: EXTERNAL_LINKS.my_github } ],
         creator: "Ki2lian",
         description: t("description"),
-        icons: { icon: "/favicon.ico" },
         keywords: "meme, devine, guess, image, web, site",
         metadataBase: new URL(env.BETTER_AUTH_URL),
         openGraph: {
