@@ -52,7 +52,7 @@ const getStoredGame = (dateKey: string): StoredDailyGame => {
 
         const parsedGame = JSON.parse(savedGame) as StoredDailyGame;
 
-        return parsedGame.game?.status && Array.isArray(parsedGame.game.guesses) ? parsedGame : newGame;
+        return parsedGame.game?.status && Array.isArray(parsedGame.game.attempts) ? parsedGame : newGame;
     } catch {
         window.localStorage.removeItem(storageKey(dateKey));
         return newGame;
@@ -184,7 +184,7 @@ export const DailyGame = ({ dateKey, effect, imageStorageKey, initialStatistics,
     }
 
     if (complete) {
-        const score = getDailyScore(storedGame.game.guesses.length);
+        const score = getDailyScore(storedGame.game.attempts.length);
 
         return (
             <section className="mx-auto px-5 sm:px-8 py-8 sm:py-12 w-full max-w-2xl text-center">
@@ -194,7 +194,7 @@ export const DailyGame = ({ dateKey, effect, imageStorageKey, initialStatistics,
                     <p className="font-bold text-5xl tracking-tighter">{format.number(score)}</p>
                     <p className="mt-2 text-muted-foreground text-sm">{t("complete.score")}</p>
                     <p className="mt-7 font-semibold text-xl">{storedGame.answer ?? t("complete.answerUnavailable")}</p>
-                    <p className="mt-2 text-muted-foreground text-sm">{t("complete.attempts", { count: storedGame.game.guesses.length })}</p>
+                    <p className="mt-2 text-muted-foreground text-sm">{t("complete.attempts", { count: storedGame.game.attempts.length })}</p>
                 </div>
                 <p className="mt-5 text-muted-foreground text-sm">{t("complete.statistics", { attempts: format.number(statistics.averageAttempts, { maximumFractionDigits: 1 }), participants: statistics.participantCount })}</p>
                 <div className="flex sm:flex-row flex-col justify-center gap-3 mt-6">
@@ -228,7 +228,7 @@ export const DailyGame = ({ dateKey, effect, imageStorageKey, initialStatistics,
                 </div>
                 <div className="flex sm:flex-row flex-col justify-between gap-3 mt-4 text-sm">
                     <p className="text-muted-foreground">{t("effect")} : <span className="font-medium text-foreground">{t(`effects.${ effect }`)}</span></p>
-                    <p className="text-muted-foreground">{t("attempt")} : <span className="font-medium text-foreground">{storedGame.game.guesses.length}</span></p>
+                    <p className="text-muted-foreground">{t("attempt")} : <span className="font-medium text-foreground">{storedGame.game.attempts.length}</span></p>
                 </div>
                 <form className="mt-4" onSubmit={ event => void submitGuess(event) }>
                     <label className="sr-only" htmlFor="daily-guess">{t("guessLabel")}</label>
@@ -238,7 +238,7 @@ export const DailyGame = ({ dateKey, effect, imageStorageKey, initialStatistics,
                     </div>
                 </form>
                 {storedGame.game.revealLevel < MAX_REVEAL_LEVEL && <Button className="mt-3 w-full min-h-11" onClick={ () => setStoredGame(current => ({ ...current, game: revealMoreDaily(current.game) })) } variant="outline"><Eye />{t("revealMore")}</Button>}
-                {storedGame.game.guesses.length > 0 && <div className="mt-5 pt-5 border-t"><div aria-label={ t("historyAriaLabel") } className="flex flex-wrap gap-2">{storedGame.game.guesses.map((item, index) => <Badge key={ `${ item }-${ index }` } variant="destructive">{item}</Badge>)}</div></div>}
+                {storedGame.game.attempts.length > 0 && <div className="mt-5 pt-5 border-t"><div aria-label={ t("historyAriaLabel") } className="flex flex-wrap gap-2">{storedGame.game.attempts.map((item, index) => <Badge key={ `${ item.kind }-${ item.value }-${ index }` } variant={ item.kind === "reveal" ? "secondary" : "destructive" }>{item.kind === "reveal" ? t("historyReveal") : item.value}</Badge>)}</div></div>}
             </div>
         </section>
     );

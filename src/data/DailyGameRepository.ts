@@ -34,9 +34,10 @@ export class DailyGameRepository {
         }
 
         const answers = getAnswers(dailyChallenge.answers);
-        const firstCorrectGuess = game.guesses.findIndex(guess => answers.some(answer => normalizeAnswer(guess) === normalizeAnswer(answer)));
+        const correctAttemptIndex = game.attempts.findIndex(attempt => attempt.kind === "guess" && answers.some(answer => normalizeAnswer(attempt.value) === normalizeAnswer(answer)));
+        const lastAttempt = game.attempts.at(-1);
 
-        if (firstCorrectGuess !== game.guesses.length - 1) {
+        if (!lastAttempt || lastAttempt.kind !== "guess" || correctAttemptIndex !== game.attempts.length - 1) {
             throw new Error("The daily challenge is not complete.");
         }
 
@@ -50,7 +51,7 @@ export class DailyGameRepository {
         }
 
         const completedAt = new Date();
-        const totalAttempts = game.guesses.length;
+        const totalAttempts = game.attempts.length;
         const score = getDailyScore(totalAttempts);
 
         try {
@@ -65,11 +66,15 @@ export class DailyGameRepository {
                                 completedAt,
                                 effect: dailyChallenge.effect,
                                 guesses: {
-                                    create: game.guesses.map((guess, position) => ({
-                                        kind: GameGuessKind.GUESS,
+                                    create: game.attempts.map((attempt, position) => ({
+                                        kind: attempt.kind === "reveal" ? GameGuessKind.REVEAL : GameGuessKind.GUESS,
                                         position,
-                                        result: position === totalAttempts - 1 ? GameGuessResult.CORRECT : GameGuessResult.INCORRECT,
-                                        value: guess,
+                                        result: attempt.kind === "guess"
+                                            ? answers.some(answer => normalizeAnswer(attempt.value) === normalizeAnswer(answer))
+                                                ? GameGuessResult.CORRECT
+                                                : GameGuessResult.INCORRECT
+                                            : null,
+                                        value: attempt.value,
                                     })),
                                 },
                                 memeId: dailyChallenge.memeId,

@@ -453,7 +453,7 @@ const UserRowActions = ({ currentUserId, user }: { currentUserId?: string; user:
                     {banExpiryMode === "duration" && (
                         <Field>
                             <FieldLabel htmlFor={ `ban-duration-${ user.id }` }>{t("banDuration")}</FieldLabel>
-                            <div className="grid grid-cols-[minmax(0,1fr)_9rem] gap-2">
+                            <div className="gap-2 grid grid-cols-[minmax(0,1fr)_9rem]">
                                 <Input
                                     id={ `ban-duration-${ user.id }` }
                                     min={ 1 }
@@ -483,7 +483,7 @@ const UserRowActions = ({ currentUserId, user }: { currentUserId?: string; user:
                                         <CalendarDays aria-hidden="true" />
                                         {banExpiryDate ? dateFormatter.format(banExpiryDate) : t("banDatePlaceholder")}
                                     </PopoverTrigger>
-                                    <PopoverContent align="start" className="w-auto p-0">
+                                    <PopoverContent align="start" className="p-0 w-auto">
                                         <Calendar
                                             disabled={ date => date < getStartOfToday() }
                                             locale={ fr }
